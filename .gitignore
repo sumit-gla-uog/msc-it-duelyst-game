@@ -1,0 +1,26 @@
+cat > .gitignore <<'EOF'
+# macOS
+.DS_Store
+__MACOSX/
+
+# sbt / Scala / Play
+target/
+project/target/
+project/project/
+logs/
+null/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# Java
+*.class
+
+# Runtime
+*.log
+EOF

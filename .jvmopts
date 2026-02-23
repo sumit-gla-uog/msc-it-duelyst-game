@@ -1,0 +1,4 @@
+--add-opens=java.base/java.lang=ALL-UNNAMED
+--add-opens=java.base/java.lang.reflect=ALL-UNNAMED
+--add-opens=java.base/java.io=ALL-UNNAMED
+--add-exports=java.base/sun.net.www.protocol.file=ALL-UNNAMED
