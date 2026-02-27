@@ -16,4 +16,12 @@ public class GameState {
 
 	// 9x5 grid for the game board (SC-102)
 	public Tile[][] board = new Tile[9][5];
+	// initialize the board with empty Tile objects
+	public void initBoard() {
+		for (int x = 0; x < 9; x++) {
+			for (int y = 0; y < 5; y++) {
+				board[x][y] = new Tile();
+			}
+		}
+	}
 }
