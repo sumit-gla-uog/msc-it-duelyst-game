@@ -22,7 +22,6 @@ import events.UnitStopped;
 import play.libs.Json;
 import structures.GameState;
 import utils.ImageListForPreLoad;
-import play.libs.Json;
 
 /**
  * The game actor is an Akka Actor that receives events from the user front-end UI (e.g. when 
@@ -52,7 +51,7 @@ public class GameActor extends AbstractActor {
 		this.out = out; // save this, so we can send commands to the front-end later
 
 		// create class instances to respond to the various events that we might recieve
-		eventProcessors = new HashMap<String,EventProcessor>();
+		eventProcessors = new HashMap<String, EventProcessor>();
 		eventProcessors.put("initalize", new Initalize());
 		eventProcessors.put("heartbeat", new Heartbeat());
 		eventProcessors.put("unitMoving", new UnitMoving());
@@ -63,7 +62,7 @@ public class GameActor extends AbstractActor {
 		eventProcessors.put("otherclicked", new OtherClicked());
 		
 		// Initalize a new game state object
-		gameState = new GameState();
+		this.gameState = new GameState();
 		
 		// Get the list of image files to pre-load the UI with
 		Set<String> images = ImageListForPreLoad.getImageListForPreLoad();
@@ -77,6 +76,13 @@ public class GameActor extends AbstractActor {
 			e.printStackTrace();
 		}
 	}
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public boolean hasGameState() {
+        return gameState != null;
+    }
 
 	/**
 	 * This method simply farms out the processing of the json messages from the front-end to the
