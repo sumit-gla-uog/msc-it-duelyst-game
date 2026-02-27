@@ -40,4 +40,12 @@ public class GameState {
 		// Return true if there is no unit on this tile
 		return board[x][y].getUnit() == null;
 	}
+	// Get the tile at specific coordinates (SC-102)
+	public Tile getTile(int x, int y) {
+		// Prevent game crash if someone asks for a tile outside the board
+		if (!isWithinBoard(x, y)) {
+			return null;
+		}
+		return board[x][y];
+	}
 }
