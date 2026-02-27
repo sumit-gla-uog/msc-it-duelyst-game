@@ -9,13 +9,14 @@ import structures.basic.Tile;
  */
 public class GameState {
 
-	
+
 	public boolean gameInitalised = false;
-	
+
 	public boolean something = false;
 
 	// 9x5 grid for the game board (SC-102)
 	public Tile[][] board = new Tile[9][5];
+
 	// initialize the board with empty Tile objects
 	public void initBoard() {
 		for (int x = 0; x < 9; x++) {
@@ -23,5 +24,20 @@ public class GameState {
 				board[x][y] = new Tile();
 			}
 		}
+	}
+
+	// Check if the given coordinates are inside the board limits
+	public boolean isWithinBoard(int x, int y) {
+		return x >= 0 && x < 9 && y >= 0 && y < 5;
+	}
+
+	// Check if the tile at (x,y) is empty
+	public boolean isTileFree(int x, int y) {
+		// If it's out of bounds, it's definitely not a free tile
+		if (!isWithinBoard(x, y)) {
+			return false;
+		}
+		// Return true if there is no unit on this tile
+		return board[x][y].getUnit() == null;
 	}
 }
