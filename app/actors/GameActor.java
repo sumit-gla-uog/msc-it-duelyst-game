@@ -1,5 +1,8 @@
 package actors;
 
+import commands.CommandQueue;
+import structures.GameStateStore;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -39,8 +42,7 @@ public class GameActor extends AbstractActor {
 	private ObjectMapper mapper = new ObjectMapper(); // Jackson Java Object Serializer, is used to turn java objects to Strings
 	private ActorRef out; // The ActorRef can be used to send messages to the front-end UI
 	private Map<String,EventProcessor> eventProcessors; // Classes used to process each type of event
-	private GameState gameState; // A class that can be used to hold game state information
-
+    private final CommandQueue commandQueue = new CommandQueue();
 	/**
 	 * Constructor for the GameActor. This is called by the GameController when the websocket
 	 * connection to the front-end is established.
@@ -63,7 +65,6 @@ public class GameActor extends AbstractActor {
 		eventProcessors.put("otherclicked", new OtherClicked());
 		
 		// Initalize a new game state object
-		gameState = new GameState();
 		
 		// Get the list of image files to pre-load the UI with
 		Set<String> images = ImageListForPreLoad.getImageListForPreLoad();
@@ -107,7 +108,18 @@ public class GameActor extends AbstractActor {
 			// Unknown event type received
 			System.err.println("GameActor: Recieved unknown event type "+messageType);
 		} else {
-			processor.processEvent(out, gameState, message); // process the event
+			commandQueue.enqueue(() -> {
+    try {
+        processor.processEvent(
+            out,
+            GameStateStore.getInstance().getGameState(),
+            message
+        );
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+});
+commandQueue.processAll(); // process the event
 		}
 	}
 	
@@ -119,3 +131,4 @@ public class GameActor extends AbstractActor {
 		out.tell(returnMessage, out);
 	}
 }
+
