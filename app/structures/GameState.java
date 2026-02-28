@@ -13,5 +13,11 @@ public class GameState {
 	public boolean gameInitalised = false;
 	
 	public boolean something = false;
-	
+
+	private static final GameState INSTANCE = new GameState();
+	private GameState() {}
+    public static GameState getInstance() {
+        return INSTANCE;
+    }
 }
+
