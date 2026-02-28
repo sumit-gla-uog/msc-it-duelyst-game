@@ -23,14 +23,16 @@ public class Initalize implements EventProcessor{
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 		// hello this is a change
-		
+
 		gameState.gameInitalised = true;
-		
+
 		gameState.something = true;
-		
-		// User 1 makes a change
-		CommandDemo.executeDemo(out); // this executes the command demo, comment out this when implementing your solution
-		//Loaders_2024_Check.test(out);
+
+		// [SC-102] Initialize the 9x5 game board when the game starts
+		gameState.initBoard();
+
+		// [SC-102] Comment out the auto mode demo as requested for the actual gameplay
+		// CommandDemo.executeDemo(out);
 	}
 
 }
