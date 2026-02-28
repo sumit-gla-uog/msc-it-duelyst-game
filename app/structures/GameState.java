@@ -7,23 +7,18 @@ import structures.basic.Tile;
  * @author Dr. Richard McCreadie
  *
  */
+
 public class GameState {
 
-
 	public boolean gameInitalised = false;
-
 	public boolean something = false;
 
 	// 9x5 grid for the game board (SC-102)
 	public Tile[][] board = new Tile[9][5];
 
-	// initialize the board with empty Tile objects
-	public void initBoard() {
-		for (int x = 0; x < 9; x++) {
-			for (int y = 0; y < 5; y++) {
-				board[x][y] = new Tile();
-			}
-		}
+	// initialize board array only (tiles will be created in Initialize.java)
+	public void initBoardArray() {
+		board = new Tile[9][5];
 	}
 
 	// Check if the given coordinates are inside the board limits
@@ -33,16 +28,14 @@ public class GameState {
 
 	// Check if the tile at (x,y) is empty
 	public boolean isTileFree(int x, int y) {
-		// If it's out of bounds, it's definitely not a free tile
 		if (!isWithinBoard(x, y)) {
 			return false;
 		}
-		// Return true if there is no unit on this tile
-		return board[x][y].getUnit() == null;
+		return board[x][y] != null && board[x][y].getUnit() == null;
 	}
-	// Get the tile at specific coordinates (SC-102)
+
+	// Get tile at coordinates
 	public Tile getTile(int x, int y) {
-		// Prevent game crash if someone asks for a tile outside the board
 		if (!isWithinBoard(x, y)) {
 			return null;
 		}

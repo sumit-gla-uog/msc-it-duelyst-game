@@ -51,7 +51,6 @@ public class InitalizationTest {
 		assertTrue(gameState.board != null);
 		assertTrue(gameState.board.length == 9);
 		assertTrue(gameState.board[0].length == 5);
-		assertTrue(gameState.board[0][0] != null);
 		
 		// lets also check that running commands don't actually do anything, since we have no front-end
 		Tile tile = BasicObjectBuilders.loadTile(3, 2); // create a tile
