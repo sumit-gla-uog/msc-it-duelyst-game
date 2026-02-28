@@ -39,7 +39,7 @@ public class GameActor extends AbstractActor {
 	private ObjectMapper mapper = new ObjectMapper(); // Jackson Java Object Serializer, is used to turn java objects to Strings
 	private ActorRef out; // The ActorRef can be used to send messages to the front-end UI
 	private Map<String,EventProcessor> eventProcessors; // Classes used to process each type of event
-	private GameState gameState; // A class that can be used to hold game state information
+    private final GameState gameState = new GameState();
 
 	/**
 	 * Constructor for the GameActor. This is called by the GameController when the websocket
@@ -63,7 +63,6 @@ public class GameActor extends AbstractActor {
 		eventProcessors.put("otherclicked", new OtherClicked());
 		
 		// Initalize a new game state object
-		gameState = GameState.getInstance();
 		
 		// Get the list of image files to pre-load the UI with
 		Set<String> images = ImageListForPreLoad.getImageListForPreLoad();
@@ -119,6 +118,7 @@ public class GameActor extends AbstractActor {
 		out.tell(returnMessage, out);
 	}
 }
+
 
 
 
