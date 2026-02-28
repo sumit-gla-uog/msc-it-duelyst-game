@@ -16,7 +16,6 @@ lazy val root = (project in file("."))
       // Testing libraries for dealing with CompletionStage...
       "org.assertj" % "assertj-core" % "3.14.0" % Test,
       "org.awaitility" % "awaitility" % "4.0.1" % Test,
-      "com.typesafe.akka" %% "akka-testkit" % "2.6.3" % Test,
     ),
     dependencyOverrides += "commons-codec" % "commons-codec" % "1.6",
     dependencyOverrides += "commons-io" % "commons-io" % "2.1",

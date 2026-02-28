@@ -15,6 +15,9 @@ import play.libs.Json;
 import structures.GameState;
 import structures.basic.Tile;
 import utils.BasicObjectBuilders;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+
 
 /**
  * This is an example of a JUnit test. In this case, we want to be able to test
@@ -101,5 +104,25 @@ public class InitalizationTest {
 		BasicCommands.drawTile(null, tile, 0); // draw tile, but will use altTell, so nothing should happen
 
 	}
+    @Test
+    public void gameState_should_persist_across_multiple_event_processors() {
 
+        CheckMessageIsNotNullOnTell altTell = new CheckMessageIsNotNullOnTell();
+        BasicCommands.altTell = altTell;
+
+        GameState gameState = new GameState();
+        assertNotNull(gameState);
+
+        GameState firstRef = gameState;
+
+        ObjectNode heartbeatMsg = Json.newObject();
+        new events.Heartbeat().processEvent(null, gameState, heartbeatMsg);
+
+        ObjectNode otherClickedMsg = Json.newObject();
+        new events.OtherClicked().processEvent(null, gameState, otherClickedMsg);
+
+        assertSame(firstRef, gameState);
+    }
+
+	
 }
