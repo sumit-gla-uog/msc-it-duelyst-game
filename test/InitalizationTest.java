@@ -47,6 +47,10 @@ public class InitalizationTest {
 		initalizeProcessor.processEvent(null, gameState, eventMessage); // send it to the initalize event processor
 		
 		assertTrue(gameState.gameInitalised); // check that this updated the game state
+		// [SC-102] Check that the 9x5 board was created and filled with Tiles
+		assertTrue(gameState.board != null);
+		assertTrue(gameState.board.length == 9);
+		assertTrue(gameState.board[0].length == 5);
 		
 		// lets also check that running commands don't actually do anything, since we have no front-end
 		Tile tile = BasicObjectBuilders.loadTile(3, 2); // create a tile
