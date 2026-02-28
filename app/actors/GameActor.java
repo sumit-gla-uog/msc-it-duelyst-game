@@ -25,7 +25,7 @@ import events.UnitStopped;
 import play.libs.Json;
 import structures.GameState;
 import utils.ImageListForPreLoad;
-import play.libs.Json;
+
 
 /**
  * The game actor is an Akka Actor that receives events from the user front-end UI (e.g. when 
@@ -107,7 +107,9 @@ public class GameActor extends AbstractActor {
 		if (processor==null) {
 			// Unknown event type received
 			System.err.println("GameActor: Recieved unknown event type "+messageType);
-} else {
+			return; 
+    }
+
     commandQueue.enqueue(() -> {
         try {
             processor.processEvent(
@@ -119,7 +121,8 @@ public class GameActor extends AbstractActor {
             e.printStackTrace();
         }
     });
-    commandQueue.processAll();
+
+    commandQueue.processAll(); // process the event
 }
 	
 	public void reportError(String errorText) {
@@ -129,5 +132,6 @@ public class GameActor extends AbstractActor {
 		out.tell(returnMessage, out);
 	}
 }
+
 
 
