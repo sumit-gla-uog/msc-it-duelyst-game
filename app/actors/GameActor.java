@@ -107,22 +107,20 @@ public class GameActor extends AbstractActor {
 		if (processor==null) {
 			// Unknown event type received
 			System.err.println("GameActor: Recieved unknown event type "+messageType);
-		} else {
-			commandQueue.enqueue(() -> {
-    try {
-        processor.processEvent(
-            out,
-            GameStateStore.getInstance().getGameState(),
-            message
-        );
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-});
-commandQueue.processAll(); // process the event
-		}
-	}
-	
+} else {
+    commandQueue.enqueue(() -> {
+        try {
+            processor.processEvent(
+                out,
+                GameStateStore.getInstance().getGameState(),
+                message
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    });
+    commandQueue.processAll();
+}
 	
 	public void reportError(String errorText) {
 		ObjectNode returnMessage = Json.newObject();
@@ -131,4 +129,5 @@ commandQueue.processAll(); // process the event
 		out.tell(returnMessage, out);
 	}
 }
+
 
