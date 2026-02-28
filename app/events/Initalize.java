@@ -3,10 +3,12 @@ package events;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import akka.actor.ActorRef;
+import structures.GameState;
 import commands.BasicCommands;
+import structures.basic.Card;
+import utils.OrderedCardLoader;
 import demo.CommandDemo;
 import demo.Loaders_2024_Check;
-import structures.GameState;
 import structures.basic.Tile;
 import structures.basic.Unit;
 import utils.BasicObjectBuilders;
@@ -26,7 +28,6 @@ public class Initalize implements EventProcessor {
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 
 		gameState.gameInitalised = true;
-
 		gameState.something = true;
 
 		// [SC-102] Initialize the 9x5 game board when the game starts
@@ -62,12 +63,28 @@ public class Initalize implements EventProcessor {
 		aiAvatar.setPositionByTile(aiTile);
 
 
+		gameState.humanPlayer.deck = OrderedCardLoader.getPlayer1Cards(2);
+		gameState.aiPlayer.deck = OrderedCardLoader.getPlayer2Cards(2);
+		
+		for (int i = 0; i < 3; i++) {
+			if (!gameState.humanPlayer.deck.isEmpty()) {
+				Card drawnCard = gameState.humanPlayer.deck.remove(0);
+				
+				gameState.humanPlayer.hand.add(drawnCard);
+				
+				BasicCommands.drawCard(out, drawnCard, i + 1, 0);
+			}
+		}
+
 		if (out != null) {
 				// initializing hp health = 20
 			BasicCommands.setPlayer1Health(out, gameState.humanPlayer);
 			BasicCommands.setPlayer2Health(out, gameState.aiPlayer);
 			BasicCommands.drawUnit(out, humanAvatar, humanTile);
 			BasicCommands.drawUnit(out, aiAvatar, aiTile);
+			BasicCommands.setPlayer1Mana(out, gameState.humanPlayer);
+			BasicCommands.setPlayer2Mana(out, gameState.aiPlayer);
+		
 		}
 
 		// [SC-102] Comment out the auto mode demo as requested for the actual gameplay
